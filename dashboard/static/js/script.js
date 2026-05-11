@@ -82,6 +82,27 @@
     });
 
     // ─────────────────────────────────────────────────────────────
+    // FLOOR TAB SWITCHING
+    // ─────────────────────────────────────────────────────────────
+    const floorTabs = document.querySelectorAll('.floor-tab');
+    const floor1 = document.getElementById('floor-1');
+    const floor2 = document.getElementById('floor-2');
+
+    floorTabs.forEach((tab, idx) => {
+        tab.addEventListener('click', () => {
+            floorTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            if (idx === 0) {
+                floor1.classList.remove('floor-hidden');
+                floor2.classList.add('floor-hidden');
+            } else {
+                floor1.classList.add('floor-hidden');
+                floor2.classList.remove('floor-hidden');
+            }
+        });
+    });
+
+    // ─────────────────────────────────────────────────────────────
     // MQTT CONNECTION
     // ─────────────────────────────────────────────────────────────
     console.log(`[MQTT] Connecting to ${BROKER_URL} as ${CLIENT_ID}...`);
@@ -165,62 +186,69 @@
         }
     }
 
-    /** Temperature handler */
+    /** Temperature handler — routes to correct floor/room */
     function handleSuhu(topic, message) {
         const val = parseFloat(message);
         if (isNaN(val)) return;
 
-        flash('val-suhu', val.toFixed(1));
-        document.getElementById('room101-temp').textContent = val.toFixed(1) + '°C';
+        const isL2 = topic.includes('lantai2');
+        const roomTempEl = isL2 ? 'room201-temp' : 'room101-temp';
+        const el = document.getElementById(roomTempEl);
+        if (el) el.textContent = val.toFixed(1) + '°C';
 
-        // Update circular gauge (range 18-35)
+        // Always update summary gauge with latest value
+        flash('val-suhu', val.toFixed(1));
         const pct = Math.max(0, Math.min(1, (val - 18) / (35 - 18)));
-        const offset = GAUGE_CIRCUMFERENCE * (1 - pct);
-        document.getElementById('gauge-temp').style.strokeDashoffset = offset;
+        document.getElementById('gauge-temp').style.strokeDashoffset = GAUGE_CIRCUMFERENCE * (1 - pct);
 
         temperatureHistory.push(val);
         if (temperatureHistory.length > 20) temperatureHistory.shift();
     }
 
-    /** Humidity handler */
+    /** Humidity handler — routes to correct floor/room */
     function handleKelembapan(topic, message) {
         const val = parseFloat(message);
         if (isNaN(val)) return;
 
-        flash('val-kelembapan', val.toFixed(1));
-        document.getElementById('room101-hum').textContent = val.toFixed(1) + '%';
+        const isL2 = topic.includes('lantai2');
+        const roomHumEl = isL2 ? 'room201-hum' : 'room101-hum';
+        const el = document.getElementById(roomHumEl);
+        if (el) el.textContent = val.toFixed(1) + '%';
 
+        flash('val-kelembapan', val.toFixed(1));
         const pct = Math.max(0, Math.min(1, val / 100));
-        const offset = GAUGE_CIRCUMFERENCE * (1 - pct);
-        document.getElementById('gauge-humidity').style.strokeDashoffset = offset;
+        document.getElementById('gauge-humidity').style.strokeDashoffset = GAUGE_CIRCUMFERENCE * (1 - pct);
 
         humidityHistory.push(val);
         if (humidityHistory.length > 20) humidityHistory.shift();
     }
 
-    /** Motion handler (QoS 1) */
+    /** Motion handler (QoS 1) — lights up correct floor's motion dot */
     function handleMotion(topic, message) {
         const motionEl = document.getElementById('val-motion');
-        const dotEl = document.getElementById('room101-motion-dot');
+        const isL2 = topic.includes('lantai2');
+        const dotEl = document.getElementById(isL2 ? 'room201-motion-dot' : 'room101-motion-dot');
 
         if (message === 'motion_detected') {
             motionEl.textContent = 'ALERT';
             motionEl.style.color = 'var(--red)';
-            dotEl.classList.add('active');
-            addAlert('critical', topic, 'Motion detected in monitored zone!');
+            if (dotEl) dotEl.classList.add('active');
+            addAlert('critical', topic, `Motion detected ${isL2 ? 'Lantai 2' : 'Lantai 1'}!`);
 
             setTimeout(() => {
                 motionEl.textContent = 'Idle';
                 motionEl.style.color = '';
-                dotEl.classList.remove('active');
+                if (dotEl) dotEl.classList.remove('active');
             }, 4000);
         }
     }
 
-    /** Door access handler (QoS 2, Message Expiry) */
+    /** Door access handler (QoS 2, Message Expiry) — also updates floor plan */
     function handleDoor(topic, message) {
         const el = document.getElementById('val-door');
+        const floorDoorText = document.getElementById('room101-door-text');
         el.textContent = message;
+        if (floorDoorText) floorDoorText.textContent = message;
 
         if (message === 'UNLOCK') {
             el.style.color = 'var(--green)';
@@ -230,16 +258,23 @@
             addAlert('warning', topic, `Door LOCK command (QoS 2, Expiry: 10s)`);
         }
 
-        setTimeout(() => { el.textContent = '--'; el.style.color = ''; }, 5000);
+        setTimeout(() => {
+            el.textContent = '--'; el.style.color = '';
+            if (floorDoorText) floorDoorText.textContent = '--';
+        }, 5000);
     }
 
-    /** Energy handler (QoS 1) */
+    /** Energy handler (QoS 1) — routes to correct floor */
     function handleEnergi(topic, message) {
         const val = parseFloat(message);
         if (isNaN(val)) return;
 
         flash('val-energi', val.toFixed(2));
-        document.getElementById('room-energi-val').textContent = val.toFixed(1) + ' kWh';
+
+        // Update both floor plan panels
+        const isL2 = topic.includes('lantai2');
+        const floorEl = document.getElementById(isL2 ? 'room-energi2-val' : 'room-energi-val');
+        if (floorEl) floorEl.textContent = val.toFixed(1) + ' kWh';
 
         const pct = Math.max(0, Math.min(100, (val / 20) * 100));
         document.getElementById('bar-energi').style.width = pct + '%';

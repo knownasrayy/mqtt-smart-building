@@ -284,6 +284,7 @@ body {
     border-radius: var(--radius-lg);
     overflow: hidden;
 }
+.floor-hidden { display: none !important; }
 
 .room {
     border-radius: var(--radius-md);
@@ -294,66 +295,96 @@ body {
     transition: all var(--transition);
     cursor: default;
 }
-.room:hover { transform: scale(1.01); }
+.room:hover { transform: scale(1.005); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
 
-.room-101 {
-    background: linear-gradient(145deg, #fef3e2, #fde8d0);
-    border: 1.5px solid #f5d0a9;
-    grid-row: 1 / 3;
-}
-.room-energi {
-    background: linear-gradient(145deg, #e0f2fe, #bae6fd);
-    border: 1.5px solid #7dd3fc;
-}
-.room-hall {
-    background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
-    border: 1.5px dashed #d1d5db;
+/* Room header */
+.room-header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.room-102 {
-    background: linear-gradient(145deg, #f9fafb, #f3f4f6);
-    border: 1.5px solid #e5e7eb;
-    display: none; /* hidden in compact mode */
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.room-label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.3rem;
-}
+/* Room colors */
+.room-101 { background: linear-gradient(145deg, #fef3e2, #fde8d0); border: 1.5px solid #f5d0a9; grid-row: 1 / 3; }
+.room-energi { background: linear-gradient(145deg, #e0f2fe, #bae6fd); border: 1.5px solid #7dd3fc; }
+.room-hall { background: linear-gradient(145deg, #f3f4f6, #e5e7eb); border: 1.5px dashed #d1d5db; justify-content: center; align-items: center; }
+.room-102 { background: linear-gradient(145deg, #f9fafb, #f3f4f6); border: 1.5px solid #e5e7eb; }
+.room-201 { background: linear-gradient(145deg, #ede9fe, #ddd6fe); border: 1.5px solid #c4b5fd; grid-row: 1 / 3; }
+.room-energi-2 { background: linear-gradient(145deg, #fef9c3, #fde68a); border: 1.5px solid #fbbf24; }
+.room-202 { background: linear-gradient(145deg, #f0fdf4, #dcfce7); border: 1.5px solid #86efac; }
 
-.room-devices { margin-top: 0.15rem; }
+.room-label { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
 .room-device-count {
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    background: rgba(255,255,255,0.7);
-    padding: 0.15rem 0.5rem;
-    border-radius: var(--radius-full);
+    font-size: 0.65rem; font-weight: 500; color: var(--text-secondary);
+    background: rgba(255,255,255,0.7); padding: 0.1rem 0.45rem; border-radius: var(--radius-full); display: inline-block; margin-top: 0.15rem;
 }
 .room-device-count.muted { color: var(--text-muted); background: rgba(0,0,0,0.04); }
 
+/* ─── Room Interior (furniture + sensor markers) ─── */
+.room-interior {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.furniture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    opacity: 0.7;
+    transition: opacity var(--transition);
+}
+.furniture:hover { opacity: 1; }
+.furniture-label {
+    font-size: 0.58rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* Sensor markers — small pulsing dots placed around the room */
+.sensor-marker {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.85);
+    border-radius: 50%;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    animation: sensor-pulse 3s infinite ease-in-out;
+}
+@keyframes sensor-pulse {
+    0%, 100% { box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+    50% { box-shadow: 0 1px 12px rgba(0,0,0,0.15); }
+}
+
+/* Corridor arrows */
+.corridor-arrows {
+    opacity: 0.4;
+    margin-top: 0.5rem;
+}
+
+/* Door data badge */
+.door-data { transition: all var(--transition); }
+
+/* Room data overlay */
 .room-data-overlay {
     margin-top: auto;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 .room-data-item {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    background: rgba(255,255,255,0.85);
-    padding: 0.4rem 0.7rem;
+    display: flex; align-items: center; gap: 0.3rem;
+    background: rgba(255,255,255,0.85); padding: 0.35rem 0.6rem;
     border-radius: var(--radius-sm);
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    backdrop-filter: blur(4px);
+    font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
+    color: var(--text-primary); backdrop-filter: blur(4px);
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     transition: all var(--transition);
 }
@@ -362,19 +393,12 @@ body {
 
 /* Motion dot */
 .room-motion-dot {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--green);
-    opacity: 0.4;
-    transition: all var(--transition);
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--green); opacity: 0.4;
+    transition: all var(--transition); flex-shrink: 0;
 }
 .room-motion-dot.active {
-    background: var(--red);
-    opacity: 1;
+    background: var(--red); opacity: 1;
     box-shadow: 0 0 12px rgba(239,68,68,0.6);
     animation: pulse-motion 0.6s ease 4;
 }

@@ -47,7 +47,7 @@ def main():
 
     try:
         while True:
-            # Simulate data
+            # ── Lantai 1 — Ruang 101 ──
             suhu = round(random.uniform(22.0, 26.0), 1)
             kelembapan = round(random.uniform(40.0, 60.0), 1)
             
@@ -81,6 +81,22 @@ def main():
                 properties=properties_kelembapan
             )
             print(f"[{CLIENT_ID}] Published {TOPIC_KELEMBAPAN}: {kelembapan} % (Alias: 2)")
+
+            # ── Lantai 2 — Ruang 201 ──
+            suhu2 = round(random.uniform(23.0, 28.0), 1)  # slightly warmer
+            kelembapan2 = round(random.uniform(35.0, 55.0), 1)
+
+            props_suhu2 = Properties(PacketTypes.PUBLISH)
+            props_suhu2.UserProperty = user_props_suhu
+            props_suhu2.TopicAlias = 3
+            client.publish("building/lantai2/ruang201/suhu", payload=str(suhu2), qos=0, retain=True, properties=props_suhu2)
+            print(f"[{CLIENT_ID}] Published building/lantai2/ruang201/suhu: {suhu2} C (Alias: 3)")
+
+            props_hum2 = Properties(PacketTypes.PUBLISH)
+            props_hum2.UserProperty = user_props_kelembapan
+            props_hum2.TopicAlias = 4
+            client.publish("building/lantai2/ruang201/kelembapan", payload=str(kelembapan2), qos=0, retain=True, properties=props_hum2)
+            print(f"[{CLIENT_ID}] Published building/lantai2/ruang201/kelembapan: {kelembapan2} % (Alias: 4)")
 
             time.sleep(3)
     except KeyboardInterrupt:

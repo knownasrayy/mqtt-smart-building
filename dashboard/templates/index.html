@@ -71,45 +71,130 @@
 
             <!-- CENTER — Floor Plan Visualization -->
             <section class="floor-plan-area" id="view-dashboard">
-                <div class="floor-plan">
-                    <!-- Room 101 -->
+                <!-- ══ LANTAI 1 ══ -->
+                <div class="floor-plan" id="floor-1">
+                    <!-- Room 101 — Main Monitored Room -->
                     <div class="room room-101" id="room-101">
-                        <div class="room-label">Ruang 101</div>
-                        <div class="room-devices">
-                            <span class="room-device-count" id="room101-device-count">3 Sensors Active</span>
+                        <div class="room-header">
+                            <div>
+                                <div class="room-label">Ruang 101</div>
+                                <span class="room-device-count">3 Sensors Active</span>
+                            </div>
+                            <div class="room-motion-dot" id="room101-motion-dot" title="Motion Sensor"></div>
                         </div>
+                        <!-- Furniture & Sensor markers -->
+                        <div class="room-interior">
+                            <div class="furniture desk">
+                                <svg width="40" height="28" viewBox="0 0 40 28" fill="none"><rect x="2" y="2" width="36" height="18" rx="2" fill="#e8d5b7" stroke="#c4a882" stroke-width="1.5"/><rect x="6" y="6" width="12" height="8" rx="1" fill="#d4c4a8"/><circle cx="30" cy="11" r="4" fill="#d4c4a8"/></svg>
+                                <span class="furniture-label">Meja Kerja</span>
+                            </div>
+                            <div class="furniture sofa">
+                                <svg width="48" height="24" viewBox="0 0 48 24" fill="none"><rect x="2" y="6" width="44" height="14" rx="4" fill="#c9b896" stroke="#b0a07a" stroke-width="1.5"/><rect x="6" y="2" width="36" height="8" rx="3" fill="#d9c8a6"/></svg>
+                                <span class="furniture-label">Sofa</span>
+                            </div>
+                            <div class="sensor-marker temp-marker" title="Temperature Sensor">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8734a" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+                            </div>
+                            <div class="sensor-marker humidity-marker" title="Humidity Sensor">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                            </div>
+                            <div class="sensor-marker door-marker" title="Door Sensor">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M5 2h11a2 2 0 012 2v16a2 2 0 01-2 2H5"/><path d="M5 22V2"/><circle cx="14" cy="12" r="1" fill="#6b7280"/></svg>
+                            </div>
+                        </div>
+                        <!-- Live data overlay -->
                         <div class="room-data-overlay">
-                            <div class="room-data-item">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
-                                <span id="room101-temp">--°C</span>
-                            </div>
-                            <div class="room-data-item">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                                <span id="room101-hum">--%</span>
-                            </div>
+                            <div class="room-data-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg><span id="room101-temp">--°C</span></div>
+                            <div class="room-data-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg><span id="room101-hum">--%</span></div>
+                            <div class="room-data-item door-data" id="room101-door-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 2h11a2 2 0 012 2v16a2 2 0 01-2 2H5"/><path d="M5 22V2"/></svg><span id="room101-door-text">--</span></div>
                         </div>
-                        <!-- Motion indicator dot -->
-                        <div class="room-motion-dot" id="room101-motion-dot"></div>
                     </div>
+
                     <!-- Energy Zone -->
                     <div class="room room-energi" id="room-energi">
-                        <div class="room-label">Panel Energi</div>
+                        <div class="room-header">
+                            <div><div class="room-label">Panel Energi</div><span class="room-device-count">1 Sensor</span></div>
+                        </div>
+                        <div class="room-interior">
+                            <div class="furniture panel-box">
+                                <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="4" y="4" width="36" height="36" rx="4" fill="#bae6fd" stroke="#7dd3fc" stroke-width="1.5"/><rect x="10" y="10" width="10" height="6" rx="1" fill="#7dd3fc"/><rect x="24" y="10" width="10" height="6" rx="1" fill="#7dd3fc"/><rect x="10" y="20" width="10" height="6" rx="1" fill="#7dd3fc"/><rect x="24" y="20" width="10" height="6" rx="1" fill="#7dd3fc"/><circle cx="15" cy="33" r="3" fill="#38bdf8"/><circle cx="29" cy="33" r="3" fill="#38bdf8"/></svg>
+                                <span class="furniture-label">Panel Listrik</span>
+                            </div>
+                        </div>
                         <div class="room-data-overlay">
-                            <div class="room-data-item energy">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                                <span id="room-energi-val">-- kWh</span>
+                            <div class="room-data-item energy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span id="room-energi-val">-- kWh</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Corridor -->
+                    <div class="room room-hall">
+                        <div class="room-label">Koridor</div>
+                        <div class="corridor-arrows">
+                            <svg width="80" height="16" viewBox="0 0 80 16" fill="none"><path d="M4 8h64M60 3l8 5-8 5" stroke="#c0c0c0" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Room 102 -->
+                    <div class="room room-102">
+                        <div class="room-header">
+                            <div><div class="room-label">Ruang 102</div><span class="room-device-count muted">Standby</span></div>
+                        </div>
+                        <div class="room-interior">
+                            <div class="furniture chair-group">
+                                <svg width="36" height="28" viewBox="0 0 36 28" fill="none"><rect x="4" y="8" width="28" height="16" rx="3" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/><rect x="8" y="4" width="20" height="8" rx="2" fill="#f3f4f6"/></svg>
+                                <span class="furniture-label">Ruang Rapat</span>
                             </div>
                         </div>
                     </div>
-                    <!-- Hallway / Corridor -->
-                    <div class="room room-hall">
-                        <div class="room-label">Koridor</div>
+                </div>
+
+                <!-- ══ LANTAI 2 ══ -->
+                <div class="floor-plan floor-hidden" id="floor-2">
+                    <div class="room room-201">
+                        <div class="room-header">
+                            <div><div class="room-label">Ruang 201</div><span class="room-device-count">2 Sensors Active</span></div>
+                            <div class="room-motion-dot" id="room201-motion-dot" title="Motion Sensor"></div>
+                        </div>
+                        <div class="room-interior">
+                            <div class="furniture desk">
+                                <svg width="40" height="28" viewBox="0 0 40 28" fill="none"><rect x="2" y="2" width="36" height="18" rx="2" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/><rect x="6" y="6" width="12" height="8" rx="1" fill="#bfdbfe"/><circle cx="30" cy="11" r="4" fill="#bfdbfe"/></svg>
+                                <span class="furniture-label">Lab Komputer</span>
+                            </div>
+                            <div class="sensor-marker temp-marker" title="Temperature Sensor">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8734a" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+                            </div>
+                        </div>
+                        <div class="room-data-overlay">
+                            <div class="room-data-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg><span id="room201-temp">--°C</span></div>
+                            <div class="room-data-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg><span id="room201-hum">--%</span></div>
+                        </div>
                     </div>
-                    <!-- Room 102 (placeholder/future) -->
-                    <div class="room room-102">
-                        <div class="room-label">Ruang 102</div>
-                        <div class="room-devices">
-                            <span class="room-device-count muted">No Data</span>
+
+                    <div class="room room-energi-2">
+                        <div class="room-header"><div><div class="room-label">Panel Energi L2</div><span class="room-device-count">1 Sensor</span></div></div>
+                        <div class="room-interior">
+                            <div class="furniture panel-box">
+                                <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="4" y="4" width="36" height="36" rx="4" fill="#fde68a" stroke="#fbbf24" stroke-width="1.5"/><rect x="10" y="10" width="10" height="6" rx="1" fill="#fbbf24"/><rect x="24" y="10" width="10" height="6" rx="1" fill="#fbbf24"/><circle cx="22" cy="30" r="5" fill="#f59e0b"/></svg>
+                                <span class="furniture-label">Panel Listrik</span>
+                            </div>
+                        </div>
+                        <div class="room-data-overlay">
+                            <div class="room-data-item energy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span id="room-energi2-val">-- kWh</span></div>
+                        </div>
+                    </div>
+
+                    <div class="room room-hall">
+                        <div class="room-label">Koridor L2</div>
+                        <div class="corridor-arrows"><svg width="80" height="16" viewBox="0 0 80 16" fill="none"><path d="M4 8h64M60 3l8 5-8 5" stroke="#c0c0c0" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                    </div>
+
+                    <div class="room room-202">
+                        <div class="room-header"><div><div class="room-label">Ruang 202</div><span class="room-device-count muted">Standby</span></div></div>
+                        <div class="room-interior">
+                            <div class="furniture chair-group">
+                                <svg width="36" height="28" viewBox="0 0 36 28" fill="none"><rect x="4" y="8" width="28" height="16" rx="3" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/><rect x="8" y="4" width="20" height="8" rx="2" fill="#f3f4f6"/></svg>
+                                <span class="furniture-label">Aula</span>
+                            </div>
                         </div>
                     </div>
                 </div>
