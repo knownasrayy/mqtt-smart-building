@@ -56,23 +56,23 @@ Desain topik disusun secara hierarkis (mengikuti pola `kategori/lantai/ruang/jen
 
 ```mermaid
 mindmap
-  root((building/))
-    lantai{id}/
-      ruang{id}/
+  root(("building/"))
+    "lantai{id}/"
+      "ruang{id}/"
         suhu
         kelembapan
         motion
         door
-      energi/
+      "energi/"
         listrik
-    status/
-      sensor-lingkungan
-      sensor-keamanan
-      sistem-energi
-    request/
+    "status/"
+      "sensor-lingkungan"
+      "sensor-keamanan"
+      "sistem-energi"
+    "request/"
       snapshot
-    response/
-      {client_id}
+    "response/"
+      "{client_id}"
 ```
 
 **Penjelasan Alokasi Quality of Service (QoS):**
